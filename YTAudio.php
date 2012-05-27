@@ -491,7 +491,7 @@ class YTAudio
 	 */
 	public function _getHeight()
 	{ 
-		if($this->getSize() == self::SIZE_INVISIBLE) return 0;
+		if($this->getSize() == self::SIZE_INVISIBLE) return 1;
 		return 25;
 	}
 	
@@ -502,7 +502,7 @@ class YTAudio
 	 */
 	public function _getWidth()
 	{
-		if($this->getSize() == self::SIZE_INVISIBLE) return 0;
+		if($this->getSize() == self::SIZE_INVISIBLE) return 1;
 		if($this->getSize() == self::SIZE_TINY) return 30;
 		
 		$modifier = 0;
@@ -566,6 +566,7 @@ class YTAudio
 		$html .= ' width="' . $this->_getWidth() . '"';
 		$html .= ' height="' . $this->_getHeight() . '"';
 		$html .= ' data="' . $this->_getEmbedURL() . '"';
+		if($this->isInvisible()) $html .= ' style="visibility:hidden;display:inline;"';
 		$html .= '>';
 		$html .= 	'<param name="movie" value="' . $this->_getEmbedURL() . '" />';
 		$html .=	'<param name="wmode" value="transparent" />';
