@@ -35,36 +35,53 @@ class YTAudio
 	/** 
 	 * Constructor
 	 *
-	 * @see size
-	 * @see theme
-	 *
 	 * @throws YTAudioException
 	 * @param string $source
-	 * @param enum $size
-	 * @param enum $theme
+	 * @param array $settings
 	 */
-	public function __construct($source, $size = self::SIZE_SMALL,$theme = self::THEME_LIGHT)
+	public function __construct($source, $settings = null)
 	{
-		$this->source($source)->size($size)->theme($theme);
+		$this->source($source);
+		
+		if($settings === null) $settings = array();
+		
+		// Feature array, ie: array('https','hd','autoplay')
+		if(in_array('https',$settings)) $this->https();
+		if(in_array('hd',$settings)) $this->hd();
+		if(in_array('autoplay',$settings)) $this->autoplay();
+		if(in_array('jsapi',$settings)) $this->jsAPI();
+		if(in_array('progressbar',$settings)) $this->progressBar();
+		if(in_array('timecode',$settings)) $this->timeCode();
+		if(in_array('cookies',$settings)) $this->cookies();
+		if(in_array('loop',$settings)) $this->loop();
+		
+		// Associative Feature Array, ie: array('https' => true, 'hd' => false)
+		if(isset($settings['https'])) $this->https($settings['https']);
+		if(isset($settings['size'])) $this->size($settings['size']);
+		if(isset($settings['hd'])) $this->hd($settings['hd']);
+		if(isset($settings['autoplay'])) $this->autoplay($settings['autoplay']);
+		if(isset($settings['jsapi'])) $this->jsAPI($settings['jsapi']);
+		if(isset($settings['progressbar'])) $this->progressBar($settings['progressbar']);
+		if(isset($settings['timecode'])) $this->timeCode($settings['timecode']);
+		if(isset($settings['cookies'])) $this->cookies($settings['cookies']);
+		if(isset($settings['theme'])) $this->theme($settings['theme']);
+		if(isset($settings['loop'])) $this->loop($settings['loop']);
 	}
 	
 	/**
 	 * Factory
 	 * Allows easy creation and daisy-chaining of a YTAudio object.
 	 *
-	 * @see size
-	 * @see theme
+	 * @see __construct 
 	 * 
 	 * @throws YTAudioException
 	 * @param string $source
-	 * @param enum $size
-	 * @param enum $theme
+	 * @param array $settings
 	 * @return YTAudio
 	 */
-	public static function create($source, $size = self::SIZE_SMALL,$theme = self::THEME_LIGHT)
+	public static function create($source, $settings = null)
 	{
-		$self = new self($source,$size,$theme);
-		return $self;
+		return new self($source,$settings);
 	}
 	
 	/**
@@ -477,12 +494,27 @@ class YTAudio
 	public function willUseCookies() { return $this->getCookies(); }
 	
 	/**
+	 * Set HTTPS
+	 * Choose whether to use HTTPs or HTTP
+	 *
+	 * @param bool $useHTTPS
+	 * @return YTAudio
+	 */
+	public function https($useHTTPS = true)
+	{
+		if($useHTTPS) $this->_https = true;
+		else $this->_https = false;
+		return $this;
+	}
+	
+	/**
 	 * Get HTTPS Setting
 	 *
 	 * @return bool
 	 */
 	public function getHTTPS() { return $this->_https; }
 	public function isHTTPS() { return $this->_https; }
+	public function isHTTP() { return !$this->_https; }
 	
 	/**
 	 * Get Height (px)
