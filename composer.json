@@ -1,0 +1,27 @@
+{
+  "name": "navarr/youtube",
+  "description": "A helper for generating an audio player flash object's HTML",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "keywords": [
+    "YouTube",
+    "Music",
+    "Audio Player"
+  ],
+  "authors": [
+    {
+      "name": "Navarr Barnier",
+      "email": "me@navarr.me",
+      "homepage": "http://navarr.me/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "~5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Navarr\\YouTube\\": "src/"
+    }
+  }
+}
