@@ -1,3 +1,10 @@
+# YouTube Audio Player Generation Library
+
+[![Build Status](https://scrutinizer-ci.com/g/navarr/ytaudio/badges/build.png?b=master)](https://scrutinizer-ci.com/g/navarr/ytaudio/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/navarr/ytaudio/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/navarr/ytaudio/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/navarr/ytaudio/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/navarr/ytaudio/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/navarr/youtube/v/stable.svg)](https://packagist.org/packages/navarr/youtube) [![Total Downloads](https://poser.pugx.org/navarr/youtube/downloads.svg)](https://packagist.org/packages/navarr/youtube) [![Latest Unstable Version](https://poser.pugx.org/navarr/youtube/v/unstable.svg)](https://packagist.org/packages/navarr/youtube) [![License](https://poser.pugx.org/navarr/youtube/license.svg)](https://packagist.org/packages/navarr/youtube)
+
 YTAudio is a helper designed to help generate a "YouTube audio embeddable" - a version of the YouTube flash player that 
 is small enough that only the audio controls show.
 
