@@ -31,7 +31,7 @@ class AudioPlayer
     protected $jsapi = false;
     protected $progressbar = false;
     protected $timecode = false;
-    protected $cookies = false;
+    protected $cookies = true;
     protected $theme = self::THEME_DARK;
     protected $loop = false;
 
