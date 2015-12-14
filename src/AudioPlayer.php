@@ -289,7 +289,7 @@ class AudioPlayer
     /**
      * Get Player Type.
      *
-     * @return int/bool
+     * @return int
      */
     public function getType()
     {
@@ -355,7 +355,7 @@ class AudioPlayer
     /**
      * Get Player Size.
      *
-     * @return int/bool
+     * @return int
      */
     public function getSize()
     {
