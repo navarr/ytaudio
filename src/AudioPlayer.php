@@ -4,7 +4,6 @@
  * @author Navarr Barnier <me@navarr.me>
  * @license MIT
  */
-
 namespace Navarr\YouTube;
 
 class AudioPlayer
@@ -299,12 +298,12 @@ class AudioPlayer
 
     public function isVideo()
     {
-        return ($this->getType() == static::TYPE_VIDEO);
+        return $this->getType() == static::TYPE_VIDEO;
     }
 
     public function isPlaylist()
     {
-        return ($this->getType() == static::TYPE_PLAYLIST);
+        return $this->getType() == static::TYPE_PLAYLIST;
     }
 
     /**
@@ -365,22 +364,22 @@ class AudioPlayer
 
     public function isTiny()
     {
-        return ($this->getSize() == static::SIZE_TINY);
+        return $this->getSize() == static::SIZE_TINY;
     }
 
     public function isSmall()
     {
-        return ($this->getSize() == static::SIZE_SMALL);
+        return $this->getSize() == static::SIZE_SMALL;
     }
 
     public function isMedium()
     {
-        return ($this->getSize() == static::SIZE_MEDIUM);
+        return $this->getSize() == static::SIZE_MEDIUM;
     }
 
     public function isLarge()
     {
-        return ($this->getSize() == static::SIZE_LARGE);
+        return $this->getSize() == static::SIZE_LARGE;
     }
 
     /**
@@ -401,7 +400,7 @@ class AudioPlayer
      */
     public function getInvisible()
     {
-        return ($this->getSize() == static::SIZE_INVISIBLE);
+        return $this->getSize() == static::SIZE_INVISIBLE;
     }
 
     public function isInvisible()
