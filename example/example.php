@@ -1,7 +1,8 @@
 <?php
+
 use Navarr\YouTube\AudioPlayer;
 
-require_once( '../src/AudioPlayer.php' );
+require_once '../src/AudioPlayer.php';
 
 // http://navarr.me/ytaudio/example.php
 
@@ -15,7 +16,7 @@ AudioPlayer::create('http://www.youtube.com/watch?v=dvgZkm1xWPE&ob=av2n')
            ->autoplay()// Autoplay
            ->render(); // Output XHTML
 
-AudioPlayer::create('http://www.youtube.com/watch?v=dvgZkm1xWPE&ob=av2n', array(
+AudioPlayer::create('http://www.youtube.com/watch?v=dvgZkm1xWPE&ob=av2n', [
     'size'  => AudioPlayer::SIZE_LARGE,
     'theme' => AudioPlayer::THEME_DARK,
     'hd',
@@ -23,4 +24,4 @@ AudioPlayer::create('http://www.youtube.com/watch?v=dvgZkm1xWPE&ob=av2n', array(
     'autoplay',
     'progressbar',
     'timecode',
-))->render();
+])->render();

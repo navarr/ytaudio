@@ -1,7 +1,6 @@
 <?php
 
 use Navarr\YouTube\AudioPlayer;
-use Navarr\YouTube\AudioPlayerException;
 
 class AudioPlayerTest extends PHPUnit_Framework_TestCase
 {
