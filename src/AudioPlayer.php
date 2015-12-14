@@ -15,8 +15,8 @@ class AudioPlayer
     const SIZE_MEDIUM = 3;
     const SIZE_LARGE = 4;
 
-    const THEME_LIGHT = "light";
-    const THEME_DARK = "dark";
+    const THEME_LIGHT = 'light';
+    const THEME_DARK = 'dark';
 
     const TYPE_VIDEO = 1;
     const TYPE_PLAYLIST = 2;
@@ -36,19 +36,20 @@ class AudioPlayer
     protected $loop = false;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @throws AudioPlayerException
      *
      * @param string $source
-     * @param array $settings
+     * @param array  $settings
+     *
+     * @throws AudioPlayerException
      */
     public function __construct($source, $settings = null)
     {
         $this->source($source);
 
         if ($settings === null) {
-            $settings = array();
+            $settings = [];
         }
 
         // Feature array, ie: array('https','hd','autoplay')
@@ -78,34 +79,34 @@ class AudioPlayer
         }
 
         // Associative Feature Array, ie: array('https' => true, 'hd' => false)
-        if (isset( $settings['https'] )) {
+        if (isset($settings['https'])) {
             $this->https($settings['https']);
         }
-        if (isset( $settings['size'] )) {
+        if (isset($settings['size'])) {
             $this->size($settings['size']);
         }
-        if (isset( $settings['hd'] )) {
+        if (isset($settings['hd'])) {
             $this->hd($settings['hd']);
         }
-        if (isset( $settings['autoplay'] )) {
+        if (isset($settings['autoplay'])) {
             $this->autoplay($settings['autoplay']);
         }
-        if (isset( $settings['jsapi'] )) {
+        if (isset($settings['jsapi'])) {
             $this->jsAPI($settings['jsapi']);
         }
-        if (isset( $settings['progressbar'] )) {
+        if (isset($settings['progressbar'])) {
             $this->progressBar($settings['progressbar']);
         }
-        if (isset( $settings['timecode'] )) {
+        if (isset($settings['timecode'])) {
             $this->timeCode($settings['timecode']);
         }
-        if (isset( $settings['cookies'] )) {
+        if (isset($settings['cookies'])) {
             $this->cookies($settings['cookies']);
         }
-        if (isset( $settings['theme'] )) {
+        if (isset($settings['theme'])) {
             $this->theme($settings['theme']);
         }
-        if (isset( $settings['loop'] )) {
+        if (isset($settings['loop'])) {
             $this->loop($settings['loop']);
         }
     }
@@ -116,10 +117,10 @@ class AudioPlayer
      *
      * @see __construct
      *
-     * @throws AudioPlayerException
-     *
      * @param string $source
-     * @param array $settings
+     * @param array  $settings
+     *
+     * @throws AudioPlayerException
      *
      * @return static
      */
@@ -132,9 +133,10 @@ class AudioPlayer
      * Set Player Video/Playlist
      * Does not validate whether or not YouTube video/playlist exists.
      *
-     * @throws AudioPlayerException
      *
      * @param string $source Can be a URL or just the ID
+     *
+     * @throws AudioPlayerException
      *
      * @return $this
      */
@@ -143,11 +145,11 @@ class AudioPlayer
         $oldSource = $this->source;
 
         $this->source = $source;
-        $parsedURL    = parse_url($source);
+        $parsedURL = parse_url($source);
 
         // 1 thing, auto-detect based on ID
         if (count($parsedURL) === 1) {
-            if (substr(strtoupper($parsedURL['path']), 0, 2) == "PL") {
+            if (substr(strtoupper($parsedURL['path']), 0, 2) == 'PL') {
                 return $this->playlist($source);
             } else {
                 return $this->video($source);
@@ -164,7 +166,7 @@ class AudioPlayer
             return $this->playlist($source);
         } catch (AudioPlayerException $e) {
             $this->source = $oldSource;
-            throw new AudioPlayerException("Could not detect source");
+            throw new AudioPlayerException('Could not detect source');
         }
     }
 
@@ -172,15 +174,16 @@ class AudioPlayer
      * Set Player Video
      * Does not validate whether or not YouTube video exists.
      *
-     * @throws AudioPlayerException
      *
      * @param string $video Can be a URL or just the ID
+     *
+     * @throws AudioPlayerException
      *
      * @return $this
      */
     public function video($video)
     {
-        $oldSource    = $this->source;
+        $oldSource = $this->source;
         $this->source = $video;
 
         $parsedURL = parse_url($video);
@@ -188,55 +191,60 @@ class AudioPlayer
         // 1 thing, assume video.
         if (count($parsedURL) === 1) {
             $this->type = static::TYPE_VIDEO;
-            $this->id   = $parsedURL['path'];
+            $this->id = $parsedURL['path'];
+
             return $this;
         }
 
         // Youtu.be - Video
-        if (strtolower($parsedURL['host']) == "youtu.be") {
+        if (strtolower($parsedURL['host']) == 'youtu.be') {
             $this->type = static::TYPE_VIDEO;
-            $this->id   = substr($parsedURL['path'], 1);
+            $this->id = substr($parsedURL['path'], 1);
+
             return $this;
         }
 
         // Assume its a YouTube URL
         // check for /watch
-        if (strtolower($parsedURL['path']) == "/watch") {
-            $parsedQuery = explode("&", $parsedURL['query']);
+        if (strtolower($parsedURL['path']) == '/watch') {
+            $parsedQuery = explode('&', $parsedURL['query']);
             // Find v=
             foreach ($parsedQuery as $v) {
-                if (substr(strtolower($v), 0, 2) == "v=") {
+                if (substr(strtolower($v), 0, 2) == 'v=') {
                     $this->type = static::TYPE_VIDEO;
-                    $this->id   = substr($v, 2);
+                    $this->id = substr($v, 2);
+
                     return $this;
                 }
             }
         }
 
         // check for /v/
-        if (substr(strtolower($parsedURL['path']), 0, 3) == "/v/") {
+        if (substr(strtolower($parsedURL['path']), 0, 3) == '/v/') {
             $this->type = static::TYPE_VIDEO;
-            $this->id   = substr($parsedURL['path'], 0, 3);
+            $this->id = substr($parsedURL['path'], 0, 3);
+
             return $this;
         }
 
         $this->source = $oldSource;
-        throw new AudioPlayerException("Could not identify video");
+        throw new AudioPlayerException('Could not identify video');
     }
 
     /**
      * Set Player Playlist
      * Does not validate whether or not YouTube playlist exists.
      *
-     * @throws AudioPlayerException
      *
      * @param string $playlist Can be a URL or just the ID
+     *
+     * @throws AudioPlayerException
      *
      * @return $this
      */
     public function playlist($playlist)
     {
-        $oldSource    = $this->source;
+        $oldSource = $this->source;
         $this->source = $playlist;
 
         $parsedURL = parse_url($playlist);
@@ -244,25 +252,27 @@ class AudioPlayer
         // 1 thing, assume playlist.
         if (count($parsedURL) === 1) {
             $this->type = static::TYPE_PLAYLIST;
-            $this->id   = $parsedURL['path'];
+            $this->id = $parsedURL['path'];
+
             return $this->cookies()->theme(static::THEME_LIGHT);
         }
 
         // both playlist types use list=
 
-        $parsedQuery = explode("&", $parsedURL['query']);
+        $parsedQuery = explode('&', $parsedURL['query']);
         // Find list=
         foreach ($parsedQuery as $v) {
-            if (substr(strtolower($v), 0, 5) == "list=") {
+            if (substr(strtolower($v), 0, 5) == 'list=') {
                 $this->type = static::TYPE_PLAYLIST;
-                $this->id   = substr($v, 5);
+                $this->id = substr($v, 5);
+
                 return $this->cookies()->theme(static::THEME_LIGHT);
             }
         }
 
         // If we don't find list=, then its not a playlist.
         $this->source = $oldSource;
-        throw new AudioPlayerException("Could not identify playlist");
+        throw new AudioPlayerException('Could not identify playlist');
     }
 
     /**
@@ -278,7 +288,7 @@ class AudioPlayer
     }
 
     /**
-     * Get Player Type
+     * Get Player Type.
      *
      * @return int/bool
      */
@@ -289,16 +299,16 @@ class AudioPlayer
 
     public function isVideo()
     {
-        return ( $this->getType() == static::TYPE_VIDEO );
+        return ($this->getType() == static::TYPE_VIDEO);
     }
 
     public function isPlaylist()
     {
-        return ( $this->getType() == static::TYPE_PLAYLIST );
+        return ($this->getType() == static::TYPE_PLAYLIST);
     }
 
     /**
-     * Get Player ID
+     * Get Player ID.
      *
      * @return string
      */
@@ -308,18 +318,19 @@ class AudioPlayer
     }
 
     /**
-     * Set Player Size
+     * Set Player Size.
      *
-     * @throws AudioPlayerException
      *
      * @param int $size [SIZE_INVISIBLE | SIZE_TINY | SIZE_SMALL | SIZE_MEDIUM | SIZE_LARGE]
+     *
+     * @throws AudioPlayerException
      *
      * @return $this
      */
     public function size($size)
     {
         if (!$this->isValidSize($size)) {
-            throw new AudioPlayerException("Invalid Size");
+            throw new AudioPlayerException('Invalid Size');
         }
         $this->size = $size;
 
@@ -338,12 +349,12 @@ class AudioPlayer
     {
         return in_array(
             $size,
-            [ static::SIZE_INVISIBLE, static::SIZE_TINY, static::SIZE_SMALL, static::SIZE_MEDIUM, static::SIZE_LARGE ]
+            [static::SIZE_INVISIBLE, static::SIZE_TINY, static::SIZE_SMALL, static::SIZE_MEDIUM, static::SIZE_LARGE]
         );
     }
 
     /**
-     * Get Player Size
+     * Get Player Size.
      *
      * @return int/bool
      */
@@ -354,27 +365,27 @@ class AudioPlayer
 
     public function isTiny()
     {
-        return ( $this->getSize() == static::SIZE_TINY );
+        return ($this->getSize() == static::SIZE_TINY);
     }
 
     public function isSmall()
     {
-        return ( $this->getSize() == static::SIZE_SMALL );
+        return ($this->getSize() == static::SIZE_SMALL);
     }
 
     public function isMedium()
     {
-        return ( $this->getSize() == static::SIZE_MEDIUM );
+        return ($this->getSize() == static::SIZE_MEDIUM);
     }
 
     public function isLarge()
     {
-        return ( $this->getSize() == static::SIZE_LARGE );
+        return ($this->getSize() == static::SIZE_LARGE);
     }
 
     /**
      * Set Player Invisible
-     * Convenience function, since Invisibility is a SIZE
+     * Convenience function, since Invisibility is a SIZE.
      *
      * @return $this
      */
@@ -384,13 +395,13 @@ class AudioPlayer
     }
 
     /**
-     * Get Player Invisibility Setting
+     * Get Player Invisibility Setting.
      *
      * @return bool
      */
     public function getInvisible()
     {
-        return ( $this->getSize() == static::SIZE_INVISIBLE );
+        return ($this->getSize() == static::SIZE_INVISIBLE);
     }
 
     public function isInvisible()
@@ -399,28 +410,30 @@ class AudioPlayer
     }
 
     /**
-     * Set Player Theme
+     * Set Player Theme.
      *
-     * @throws AudioPlayerException
      *
      * @param int $theme [THEME_LIGHT | THEME_DARK]
+     *
+     * @throws AudioPlayerException
      *
      * @return $this
      */
     public function theme($theme)
     {
         if ($this->isPlaylist() && $theme == static::THEME_DARK) {
-            throw new AudioPlayerException("Playlists can not use the Dark Theme.  YouTube limitation.");
+            throw new AudioPlayerException('Playlists can not use the Dark Theme.  YouTube limitation.');
         }
         if ($theme != static::THEME_LIGHT && $theme != static::THEME_DARK) {
-            throw new AudioPlayerException("Invalid Theme");
+            throw new AudioPlayerException('Invalid Theme');
         }
         $this->theme = $theme;
+
         return $this;
     }
 
     /**
-     * Get Player Theme
+     * Get Player Theme.
      *
      * @return bool
      */
@@ -431,7 +444,7 @@ class AudioPlayer
 
     /**
      * Set HD
-     * Choose whether or not to force the player into HD
+     * Choose whether or not to force the player into HD.
      *
      * @param bool $useHD
      *
@@ -444,11 +457,12 @@ class AudioPlayer
         } else {
             $this->hd = false;
         }
+
         return $this;
     }
 
     /**
-     * Get HD Setting
+     * Get HD Setting.
      *
      * @return bool
      */
@@ -478,11 +492,12 @@ class AudioPlayer
         } else {
             $this->autoplay = false;
         }
+
         return $this;
     }
 
     /**
-     * Get Autoplay Setting
+     * Get Autoplay Setting.
      *
      * @return bool
      */
@@ -498,7 +513,7 @@ class AudioPlayer
 
     /**
      * Set JSApi
-     * Choose whether or not to allow access via the YouTube JavaScript API
+     * Choose whether or not to allow access via the YouTube JavaScript API.
      *
      * @param bool $useJSAPI
      *
@@ -511,11 +526,12 @@ class AudioPlayer
         } else {
             $this->jsapi = false;
         }
+
         return $this;
     }
 
     /**
-     * Get JavaScript API Setting
+     * Get JavaScript API Setting.
      *
      * @return bool
      */
@@ -536,7 +552,7 @@ class AudioPlayer
 
     /**
      * Set Loop
-     * Choose whether or not to loop once the video/playlist is over
+     * Choose whether or not to loop once the video/playlist is over.
      *
      * @param bool $loop
      *
@@ -549,11 +565,12 @@ class AudioPlayer
         } else {
             $this->loop = false;
         }
+
         return $this;
     }
 
     /**
-     * Get Loop Setting
+     * Get Loop Setting.
      *
      * @return bool
      */
@@ -569,7 +586,7 @@ class AudioPlayer
 
     /**
      * Set Progress Bar
-     * Choose whether or not to display the progress bar
+     * Choose whether or not to display the progress bar.
      *
      * @param bool $useProgressBar
      *
@@ -593,7 +610,7 @@ class AudioPlayer
     }
 
     /**
-     * Get Progress Bar Setting
+     * Get Progress Bar Setting.
      *
      * @return bool
      */
@@ -609,7 +626,7 @@ class AudioPlayer
 
     /**
      * Set Time Code
-     * Choose whether or not to display the time code.  Requires Progress Bar
+     * Choose whether or not to display the time code.  Requires Progress Bar.
      *
      * @param bool $useTimeCode
      *
@@ -635,7 +652,7 @@ class AudioPlayer
     }
 
     /**
-     * Get Time Code Setting
+     * Get Time Code Setting.
      *
      * @return bool
      */
@@ -655,13 +672,14 @@ class AudioPlayer
      *
      * @param bool $useCookies
      *
-     * @return $this
      * @throws AudioPlayerException
+     *
+     * @return $this
      */
     public function cookies($useCookies = true)
     {
         if (!$useCookies && $this->getType() == static::TYPE_PLAYLIST) {
-            throw new AudioPlayerException("Can not disable cookies with playlists.  YouTube limitation.");
+            throw new AudioPlayerException('Can not disable cookies with playlists.  YouTube limitation.');
         }
 
         if ($useCookies) {
@@ -669,11 +687,12 @@ class AudioPlayer
         } else {
             $this->cookies = false;
         }
+
         return $this;
     }
 
     /**
-     * Get Cookie Setting
+     * Get Cookie Setting.
      *
      * @return bool
      */
@@ -689,7 +708,7 @@ class AudioPlayer
 
     /**
      * Set HTTPS
-     * Choose whether to use HTTPs or HTTP
+     * Choose whether to use HTTPs or HTTP.
      *
      * @param bool $useHTTPS
      *
@@ -702,11 +721,12 @@ class AudioPlayer
         } else {
             $this->https = false;
         }
+
         return $this;
     }
 
     /**
-     * Get HTTPS Setting
+     * Get HTTPS Setting.
      *
      * @return bool
      */
@@ -726,7 +746,7 @@ class AudioPlayer
     }
 
     /**
-     * Get Height (px)
+     * Get Height (px).
      *
      * @return int
      */
@@ -735,11 +755,12 @@ class AudioPlayer
         if ($this->getSize() == static::SIZE_INVISIBLE) {
             return 1;
         }
+
         return 25;
     }
 
     /**
-     * Get Width (px)
+     * Get Width (px).
      *
      * @return int
      */
@@ -768,7 +789,7 @@ class AudioPlayer
     }
 
     /**
-     * Get Embed URL
+     * Get Embed URL.
      *
      * @param bool $encode
      *
@@ -776,27 +797,27 @@ class AudioPlayer
      */
     public function getEmbedURL($encode = true)
     {
-        $url = "";
+        $url = '';
 
         // PROTOCOL
         if ($this->getHTTPS()) {
-            $url .= "https://";
+            $url .= 'https://';
         } else {
-            $url .= "http://";
+            $url .= 'http://';
         }
 
         // DOMAIN
         if ($this->getCookies()) {
-            $url .= "www.youtube.com";
+            $url .= 'www.youtube.com';
         } else {
-            $url .= "www.youtube-nocookie.com";
+            $url .= 'www.youtube-nocookie.com';
         }
 
         // PATH
         if ($this->isVideo()) {
-            $url .= "/v/";
+            $url .= '/v/';
         } else {
-            $url .= "/p/";
+            $url .= '/p/';
         }
 
         // ID
@@ -807,7 +828,7 @@ class AudioPlayer
         } // Playlists start with PL but YouTube doesn't want that
 
         // Build Query String
-        $query            = array();
+        $query = [];
         $query['version'] = 2;
         if ($this->getAutoplay()) {
             $query['autoplay'] = 1;
@@ -824,30 +845,30 @@ class AudioPlayer
         $query['theme'] = $this->getTheme();
 
         $seperator = $encode ? '&amp;' : '&';
-        $url .= '?' . http_build_query($query, $seperator);
+        $url .= '?'.http_build_query($query, $seperator);
 
         return $url;
     }
 
     /**
-     * Render valid XHTML
+     * Render valid XHTML.
      *
      * @param bool $return Return the HTML instead of echoing it.
      *
-     * @return string|boolean
+     * @return string|bool
      */
     public function render($return = false)
     {
         // Build the string
         $html = '<object type="application/x-shockwave-flash"';
-        $html .= ' width="' . $this->getWidth() . '"';
-        $html .= ' height="' . $this->getHeight() . '"';
-        $html .= ' data="' . $this->getEmbedURL() . '"';
+        $html .= ' width="'.$this->getWidth().'"';
+        $html .= ' height="'.$this->getHeight().'"';
+        $html .= ' data="'.$this->getEmbedURL().'"';
         if ($this->isInvisible()) {
             $html .= ' style="visibility:hidden;display:inline;"';
         }
         $html .= '>';
-        $html .= '<param name="movie" value="' . $this->getEmbedURL() . '" />';
+        $html .= '<param name="movie" value="'.$this->getEmbedURL().'" />';
         $html .= '<param name="wmode" value="transparent" />';
         $html .= '</object>';
 
@@ -855,6 +876,7 @@ class AudioPlayer
             return $html;
         }
         echo $html;
+
         return true;
     }
 }
